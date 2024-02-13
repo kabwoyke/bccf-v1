@@ -67,46 +67,37 @@ class _HomepageState extends State<Homepage> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Text(
-                  greatings(),
-                  style: GoogleFonts.poppins(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "Kimani",
-                  style: GoogleFonts.poppins(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
             const SizedBox(height: 20),
             Word(),
             const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Navigatetab(logo: Image.asset("assets/logo.jpeg"), name: "home"),
-                Navigatetab(logo: Image.asset("assets/logo.jpeg"), name: "home"),
-                Navigatetab(logo: Image.asset("assets/logo.jpeg"), name: "home"),
-              ],
+            SingleChildScrollView(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                   children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Navigatetab(logo: Image.asset("assets/Church.jpg"), name: "Services"),
+                  Navigatetab(logo: Image.asset("assets/calender.png"), name: "Events"),
+                  Navigatetab(logo: Image.asset("assets/Giving.jpg"), name: "Offering"),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Navigatetab(logo: Image.asset("assets/Prayer.jpg"), name: "Prayer Request"),
+                  Navigatetab(logo: Image.asset("assets/Projects.jpg"), name: "Projects"),
+                  Navigatetab(logo: Image.asset("assets/Social.png"), name: "Our Socials"),
+            
+                   ],
+              ),
+              
+                   ]
+                ),
+              ),
             ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Navigatetab(logo: Image.asset("assets/logo.jpeg"), name: "home"),
-                Navigatetab(logo: Image.asset("assets/logo.jpeg"), name: "home"),
-                Navigatetab(logo: Image.asset("assets/logo.jpeg"), name: "home"),
-              ],
-            )
           ],
         ),
       ),
