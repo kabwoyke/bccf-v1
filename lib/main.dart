@@ -1,3 +1,4 @@
+import 'package:bccf/screens/homepage.dart';
 import 'package:bccf/screens/login.dart';
 import 'package:bccf/state/AuthProvider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -30,6 +31,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
+      debugShowCheckedModeBanner: false,
+      home: Homepage(),
     return ChangeNotifierProvider(
         create: (_) => AuthProvider(),
         child: MaterialApp(
@@ -90,6 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return const Scaffold(
       body: const LoginScreen(),
      
-    );
+
   }
 }
