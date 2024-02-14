@@ -4,6 +4,7 @@ import 'package:bccf/components/word.dart';
 import 'package:bccf/main.dart';
 import 'package:bccf/screens/login.dart';
 import 'package:bccf/screens/prayer.dart';
+import 'package:bccf/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -65,9 +66,14 @@ class _HomepageState extends State<Homepage> {
                 padding: const EdgeInsets.only(top:22),
                 child: Column(
                   children: [
-                    Icon(Icons.person,
-                    color: Colors.black,
-                    size: 25,),
+                    GestureDetector(
+                      onTap: (){
+                         Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ProfilePage()));
+                      },
+                      child: Icon(Icons.person,
+                      color: Colors.black,
+                      size: 25,),
+                    ),
                     Text('User',
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w400,

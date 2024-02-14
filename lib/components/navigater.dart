@@ -20,7 +20,7 @@ class Navigatetab extends StatefulWidget {
 class _NavigatetabState extends State<Navigatetab> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: widget.onPressed,
       child: Column(
         children: [
