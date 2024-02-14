@@ -1,6 +1,8 @@
 import 'package:bccf/components/navigater.dart';
 import 'package:bccf/components/notification.dart';
 import 'package:bccf/components/word.dart';
+import 'package:bccf/main.dart';
+import 'package:bccf/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -79,9 +81,16 @@ class _HomepageState extends State<Homepage> {
                 padding: const EdgeInsets.only(top:22),
                 child: Column(
                   children: [
-                    Icon(Icons.logout_rounded,
-                    color: Colors.black,
-                    size: 25,),
+                    GestureDetector(
+                      onTap: () async {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>LoginScreen()));
+                        print("logged out");
+                      },
+                      child: Icon(
+                        Icons.logout_rounded,
+                      color: Colors.black,
+                      size: 25,),
+                    ),
                     Text('Logout',
                     style:GoogleFonts.poppins(
                       fontSize: 14,

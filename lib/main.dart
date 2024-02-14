@@ -35,17 +35,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider(
+        create: (_) => AuthProvider(),
+        child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: ChangeNotifierProvider(
-          create: (_) => AuthProvider(),
-          child: Homepage(),
-        ));
+        home: MyHomePage(title: "Home Page",),
+
+    ));
   }
 }
 
@@ -108,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return Center(child: CircularProgressIndicator());
               }
 
-              if (supabase.auth.currentSession == null) {
+              if (snapshot.data?.session == null) {
                 return LoginScreen();
               }
               return Homepage();
