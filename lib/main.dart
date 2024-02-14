@@ -10,6 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.notification.onGrantedCallback(() {
@@ -25,6 +26,7 @@ void main() async {
   );
   runApp(const MyApp());
 }
+
 
 final supabase = Supabase.instance.client;
 
@@ -60,14 +62,18 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     supabase.auth.onAuthStateChange.listen((event) async {
       if (event.event == AuthChangeEvent.signedIn) {
+      if (event.event == AuthChangeEvent.signedIn) {
         await FirebaseMessaging.instance.requestPermission();
         await FirebaseMessaging.instance.getAPNSToken();
         var fcmToken = await FirebaseMessaging.instance.getToken();
 
         if (fcmToken != null) {
+        if (fcmToken != null) {
           await addToken(fcmToken);
         }
         FirebaseMessaging.instance.onTokenRefresh.listen((event) async {
+          if (fcmToken != null) {
+            await addToken(fcmToken);
           if (fcmToken != null) {
             await addToken(fcmToken);
           }
@@ -83,8 +89,12 @@ class _MyHomePageState extends State<MyHomePage> {
       await supabase
           .from("fcm_tokens")
           .upsert({'user_id': userId, 'token': token});
+      await supabase
+          .from("fcm_tokens")
+          .upsert({'user_id': userId, 'token': token});
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
