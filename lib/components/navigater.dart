@@ -19,13 +19,14 @@ class _NavigatetabState extends State<Navigatetab> {
     return Column(
       children: [
         Container(
-          height: 90,
-          width: 90,
+          height: 70,
+          width: 70,
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(14),
           ),
-          child: widget.logo,
+          child: widget.logo
+          ,
         ),
         Text(
           widget.name,

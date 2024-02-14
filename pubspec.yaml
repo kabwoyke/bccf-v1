@@ -101,7 +101,16 @@ flutter:
      - assets/Tv.jpg
      - assets/Social.png
      - assets/Projects.jpg
+<<<<<<< Updated upstream
      - .env
+=======
+     - assets/Gtv.png
+
+
+     
+     
+
+>>>>>>> Stashed changes
 
 
 
