@@ -95,6 +95,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: const LoginScreen());
+    return Scaffold(
+        body: StreamBuilder<AuthState>(
+            stream: supabase.auth.onAuthStateChange,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("${snapshot.error.toString()}"),
+                );
+              }
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (supabase.auth.currentSession == null) {
+                return LoginScreen();
+              }
+              return Homepage();
+            }));
   }
+}
 }
