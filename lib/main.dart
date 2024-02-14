@@ -61,19 +61,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     supabase.auth.onAuthStateChange.listen((event) async {
-      if (event.event == AuthChangeEvent.signedIn) {
+ 
       if (event.event == AuthChangeEvent.signedIn) {
         await FirebaseMessaging.instance.requestPermission();
         await FirebaseMessaging.instance.getAPNSToken();
         var fcmToken = await FirebaseMessaging.instance.getToken();
 
         if (fcmToken != null) {
-        if (fcmToken != null) {
           await addToken(fcmToken);
         }
         FirebaseMessaging.instance.onTokenRefresh.listen((event) async {
-          if (fcmToken != null) {
-            await addToken(fcmToken);
           if (fcmToken != null) {
             await addToken(fcmToken);
           }
