@@ -29,36 +29,69 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.grey.shade300,
-        backgroundColor: Colors.blue.shade300,
+        backgroundColor: Colors.grey.shade200,
         toolbarHeight: 70,
-        shape: ContinuousRectangleBorder(
+        shape: const ContinuousRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(45),
           ),
         ),
-        title: Center(
-          child: Column(
-            children: [
-              Container(
-                height: 40,
-                child: Image(image: AssetImage("assets/logo.jpeg")),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 40,
+              child: Image(image: AssetImage("assets/logo.jpeg")),
+            ),
+            Text(
+              "The BCCF APP",
+              style: GoogleFonts.poppins(
+                color: Colors.black,
+                fontSize: 19,
+                fontWeight: FontWeight.w500,
               ),
-              Text(
-                "The BCCF APP",
-                style: GoogleFonts.poppins(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
         actions: [
           Row(
             children: [
               NotificationIcon(icon: Icons.notifications, counter: 5),
-              SizedBox(width: 10),
+              SizedBox(width:10),
+              Padding(
+                padding: const EdgeInsets.only(top:22),
+                child: Column(
+                  children: [
+                    Icon(Icons.person,
+                    color: Colors.black,
+                    size: 25,),
+                    Text('User',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14
+                    ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 10,),
+              Padding(
+                padding: const EdgeInsets.only(top:22),
+                child: Column(
+                  children: [
+                    Icon(Icons.logout_rounded,
+                    color: Colors.black,
+                    size: 25,),
+                    Text('Logout',
+                    style:GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight:FontWeight.w400 
+                    ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox( width: 10,)
             ],
           ),
         ],
@@ -70,32 +103,29 @@ class _HomepageState extends State<Homepage> {
             const SizedBox(height: 20),
             Word(),
             const SizedBox(height: 30),
-            SingleChildScrollView(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                   children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Navigatetab(logo: Image.asset("assets/Church.jpg"), name: "Services"),
-                  Navigatetab(logo: Image.asset("assets/calender.png"), name: "Events"),
-                  Navigatetab(logo: Image.asset("assets/Giving.jpg"), name: "Offering"),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Navigatetab(logo: Image.asset("assets/Prayer.jpg"), name: "Prayer Request"),
-                  Navigatetab(logo: Image.asset("assets/Projects.jpg"), name: "Projects"),
-                  Navigatetab(logo: Image.asset("assets/Social.png"), name: "Our Socials"),
-            
-                   ],
-              ),
-              
-                   ]
-                ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                 children: [
+                  Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Navigatetab(logo: Image.asset("assets/Church.jpg"), name: "Services"),
+                Navigatetab(logo: Image.asset("assets/calender.png"), name: "Events"),
+                Navigatetab(logo: Image.asset("assets/Giving.jpg"), name: "Offering"),
+              ],
+            ),
+            const SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Navigatetab(logo: Image.asset("assets/Prayer.jpg"), name: "Prayer Request"),
+                Navigatetab(logo: Image.asset("assets/Projects.jpg"), name: "Projects"),
+                Navigatetab(logo: Image.asset("assets/Social.png"), name: "Our Socials"),
+
+                 ],
+            )
+                 ]
               ),
             ),
           ],

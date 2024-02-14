@@ -8,36 +8,47 @@ import 'package:flutter/material.dart';
 
     @override
     Widget build(BuildContext context) {
-      return Stack(
+      return Column(
         children: [
-          Icon(
-            icon,
-            size: 32,
-            color: Colors.black,
-          ),
-          Positioned(
-            right: 0,
-            top: 0,
-            child: Container(
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.circle,
-              ),
-              constraints: BoxConstraints(
-                minWidth: 15,
-                minHeight: 15,
-              ),
-              child: Text(
-                counter.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-                textAlign: TextAlign.center,
+          SizedBox(height: 10,),
+          Padding(
+            padding: const EdgeInsets.only(top: 8, right: 8),
+            child: Center(
+              child: Stack(
+                children: [
+                  Icon(
+                    icon,
+                    size: 30,
+                    color: Colors.black,
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 17,
+                        minHeight: 17,
+                      ),
+                      child: Text(
+                        counter.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
+          Text("Notification")
         ],
       );
     }

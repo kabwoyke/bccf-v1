@@ -10,6 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.notification.onGrantedCallback(() {
@@ -26,6 +27,7 @@ void main() async {
   runApp(const MyApp());
 }
 
+
 final supabase = Supabase.instance.client;
 
 class MyApp extends StatelessWidget {
@@ -33,18 +35,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => AuthProvider(),
-        child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-            useMaterial3: true,
-          ),
-          debugShowCheckedModeBanner: false,
-          home: MyHomePage(
-            title: "Home",
-          ),
+    return MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+          child: Homepage(),
         ));
   }
 }
@@ -61,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     supabase.auth.onAuthStateChange.listen((event) async {
+ 
       if (event.event == AuthChangeEvent.signedIn) {
         await FirebaseMessaging.instance.requestPermission();
         await FirebaseMessaging.instance.getAPNSToken();
@@ -85,28 +86,15 @@ class _MyHomePageState extends State<MyHomePage> {
       await supabase
           .from("fcm_tokens")
           .upsert({'user_id': userId, 'token': token});
+      await supabase
+          .from("fcm_tokens")
+          .upsert({'user_id': userId, 'token': token});
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: StreamBuilder<AuthState>(
-            stream: supabase.auth.onAuthStateChange,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("${snapshot.error.toString()}"),
-                );
-              }
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
-
-              if (supabase.auth.currentSession == null) {
-                return LoginScreen();
-              }
-              return Homepage();
-            }));
+    return const Scaffold(body: const LoginScreen());
   }
 }
