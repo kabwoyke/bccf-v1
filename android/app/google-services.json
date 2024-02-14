@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "910078173010",
+    "project_id": "bccf-fcm",
+    "storage_bucket": "bccf-fcm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910078173010:android:a1751c471bb9a7db37648b",
+        "android_client_info": {
+          "package_name": "com.example.bccf"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk_OqjQ561xT_4v7GKauR4BPEks9jFlp4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
