@@ -10,8 +10,8 @@ class Word extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(20),
+            color: Colors.purple.shade400,
+            borderRadius: BorderRadius.circular(30),
           ),
           child: Stack(
             children: [
@@ -23,7 +23,7 @@ class Word extends StatelessWidget {
                   child: const Icon(
                     Icons.format_quote,
                     size: 30,
-                    color: Colors.black,
+                    color: Colors.grey,
                   ),
                 ),
               ),
@@ -35,7 +35,7 @@ class Word extends StatelessWidget {
                   child: const Icon(
                     Icons.format_quote,
                     size: 30,
-                    color: Colors.black,
+                    color: Colors.grey,
                   ),
                 ),
               ),
@@ -46,14 +46,16 @@ class Word extends StatelessWidget {
                     Text("Word of The Day",
                     style: GoogleFonts.poppins(
                       fontSize: 19,
-                      fontWeight: FontWeight.w600
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white
                     ),),
                     const Divider(thickness: 2),
                     Text(
                       "Romans 8:38-39",
                       style: GoogleFonts.poppins(
                       fontSize: 16,
-                      fontWeight: FontWeight.w500
+                      fontWeight: FontWeight.w500,
+                       color: Colors.white
                       ),
                     ),
                     SizedBox(height: 10),
@@ -62,7 +64,8 @@ class Word extends StatelessWidget {
                       child: Text(" For I am convinced that neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord.",
                       style: GoogleFonts.poppins(
                       fontSize: 15,
-                      fontWeight: FontWeight.w400
+                      fontWeight: FontWeight.w400,
+                       color: Colors.white
                       ),
                       ),
                     )
