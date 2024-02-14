@@ -9,6 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.notification.onGrantedCallback(() {
@@ -16,7 +17,7 @@ void main() async {
   }).request();
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   await Supabase.initialize(
     url: dotenv.env["SUPABASE_URL"]!,
@@ -24,6 +25,7 @@ void main() async {
   );
   runApp(const MyApp());
 }
+
 final supabase = Supabase.instance.client;
 
 class MyApp extends StatelessWidget {
@@ -31,15 +33,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Homepage(),
     return ChangeNotifierProvider(
         create: (_) => AuthProvider(),
         child: MaterialApp(
@@ -48,10 +41,9 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
             useMaterial3: true,
           ),
-          home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        ),
-
-    );
+          debugShowCheckedModeBanner: false,
+          home: Homepage(),
+        ));
   }
 }
 
@@ -67,39 +59,35 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     supabase.auth.onAuthStateChange.listen((event) async {
-      if(event.event == AuthChangeEvent.signedIn){
+      if (event.event == AuthChangeEvent.signedIn) {
         await FirebaseMessaging.instance.requestPermission();
         await FirebaseMessaging.instance.getAPNSToken();
         var fcmToken = await FirebaseMessaging.instance.getToken();
 
-        if(fcmToken != null){
+        if (fcmToken != null) {
           await addToken(fcmToken);
         }
         FirebaseMessaging.instance.onTokenRefresh.listen((event) async {
-          if(fcmToken != null){
-          await addToken(fcmToken);
+          if (fcmToken != null) {
+            await addToken(fcmToken);
           }
-          
         });
       }
     });
   }
-  Future<void> addToken(String token) async{
-    var userId =  supabase.auth.currentUser?.id;
-    if(userId != null){
+
+  Future<void> addToken(String token) async {
+    var userId = supabase.auth.currentUser?.id;
+    if (userId != null) {
       print(userId);
-      await supabase.from("fcm_tokens").upsert({
-        'user_id' : userId,
-        'token' : token
-    });
+      await supabase
+          .from("fcm_tokens")
+          .upsert({'user_id': userId, 'token': token});
     }
-   
   }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: const LoginScreen(),
-     
-
+    return const Scaffold(body: const LoginScreen());
   }
 }
