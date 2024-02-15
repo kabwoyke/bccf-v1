@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 12.0,),
                     TextInput(
+                      maxlines: 1,
                       labelText: "Email", icon: Icons.email_sharp,
                       onChanged: (emailText){
                         if (emailText == null || emailText.isEmpty || !isEmailValid(emailText)) {
@@ -70,6 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     const SizedBox(height: 12.0,),
                     TextInput(
+                        maxlines: 1,
                         obsecureText: true,
                         labelText: "Password", icon: Icons.lock ,
                         onChanged:(passwordText){

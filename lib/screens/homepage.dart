@@ -3,6 +3,8 @@ import 'package:bccf/components/notification.dart';
 import 'package:bccf/components/word.dart';
 import 'package:bccf/main.dart';
 import 'package:bccf/screens/login.dart';
+import 'package:bccf/screens/prayer.dart';
+import 'package:bccf/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -64,9 +66,14 @@ class _HomepageState extends State<Homepage> {
                 padding: const EdgeInsets.only(top:22),
                 child: Column(
                   children: [
-                    Icon(Icons.person,
-                    color: Colors.black,
-                    size: 25,),
+                    GestureDetector(
+                      onTap: (){
+                         Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ProfilePage()));
+                      },
+                      child: Icon(Icons.person,
+                      color: Colors.black,
+                      size: 25,),
+                    ),
                     Text('User',
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w400,
@@ -117,20 +124,24 @@ class _HomepageState extends State<Homepage> {
               child: Column(
                  children: [
                   Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Navigatetab(logo: Image.asset("assets/Church.jpg"), name: "Services"),
-                Navigatetab(logo: Image.asset("assets/calender.png"), name: "Events"),
-                Navigatetab(logo: Image.asset("assets/Giving.jpg"), name: "Offering"),
+                Navigatetab(onPressed: (){}, logo: Image.asset("assets/Church.jpg"), name: "Services"),
+                SizedBox(width: 10,),
+                Navigatetab(onPressed: (){}, logo: Image.asset("assets/calender.png"), name: "Events"),
+                SizedBox(width: 10,),
+                Navigatetab(onPressed: (){},logo: Image.asset("assets/Giving.jpg"), name: "Offering"),
               ],
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 35),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Navigatetab(logo: Image.asset("assets/Prayer.jpg"), name: "Prayer Request"),
-                Navigatetab(logo: Image.asset("assets/Projects.jpg"), name: "Projects"),
-                Navigatetab(logo: Image.asset("assets/Social.png"), name: "Our Socials"),
+                Navigatetab(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Prayerpage()));},logo: Image.asset("assets/Prayer.jpg"), name: "Prayer Request"),
+                SizedBox(width: 10,),
+                Navigatetab(onPressed: (){}, logo: Image.asset("assets/Projects.jpg"), name: "Projects"),
+                SizedBox(width: 10,),
+                Navigatetab(onPressed: (){}, logo: Image.asset("assets/Social.png"), name: "Our Socials"),
 
                  ],
             )
