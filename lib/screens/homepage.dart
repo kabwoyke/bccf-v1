@@ -5,6 +5,7 @@ import 'package:bccf/main.dart';
 import 'package:bccf/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -83,7 +84,20 @@ class _HomepageState extends State<Homepage> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>LoginScreen()));
+                        try{
+                          await supabase.auth.signOut();
+                        } on AuthException catch(e){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("${e.message}"))
+                          );
+                        }
+                        catch(e){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("${e}"))
+                          );
+                        }
+
+                        // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>LoginScreen()));
                         print("logged out");
                       },
                       child: Icon(

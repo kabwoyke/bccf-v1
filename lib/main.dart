@@ -87,9 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
       await supabase
           .from("fcm_tokens")
           .upsert({'user_id': userId, 'token': token});
-      await supabase
-          .from("fcm_tokens")
-          .upsert({'user_id': userId, 'token': token});
     }
   }
 
@@ -112,7 +109,10 @@ class _MyHomePageState extends State<MyHomePage> {
               if (snapshot.data?.session == null) {
                 return LoginScreen();
               }
+
               return Homepage();
+
+
             }));
   }
 }
