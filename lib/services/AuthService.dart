@@ -1,6 +1,6 @@
 import 'package:bccf/main.dart';
 import 'package:bccf/models/UserModel.dart';
-import 'package:bccf/state/AuthProvider.dart';
+import 'package:bccf/screens/homepage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/material.dart';
 class AuthService {
@@ -12,6 +12,7 @@ class AuthService {
         final response = await supabase.auth.signInWithPassword(password: password , email: email);
         print(response.user);
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=>Homepage()));
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Success")),
           );
@@ -39,6 +40,7 @@ class AuthService {
             "gender" : user.gender,
             "user_id" : userObject.user?.id
           });
+
 
 
       } on AuthException catch(error){
