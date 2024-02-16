@@ -21,17 +21,18 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController bioController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
   File? _newProfileImage;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    nameController.text = widget.currentName;
-    emailController.text = widget.currentEmail;
-    bioController.text = widget.currentBio;
+    _nameController.text = widget.currentName;
+    _emailController.text = widget.currentEmail;
+    _bioController.text = widget.currentBio;
   }
 
   @override
@@ -41,59 +42,77 @@ class _EditProfilePageState extends State<EditProfilePage> {
         title: Text('Edit Profile'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: _selectProfileImage,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: _newProfileImage != null
-                      ? FileImage(_newProfileImage!)
-                      : AssetImage('assets/profile_image.jpg') as ImageProvider,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: _selectProfileImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: _newProfileImage != null
+                        ? FileImage(_newProfileImage!)
+                        : AssetImage('assets/profile_image.jpg') as ImageProvider,
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Name',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: nameController,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Email',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: emailController,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Bio',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: bioController,
-                maxLines: 3,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Save changes and navigate back to profile page
-                  Navigator.pop(context, {
-                    'name': nameController.text,
-                    'email': emailController.text,
-                    'bio': bioController.text,
-                    'profileImage': _newProfileImage,
-                  });
-                },
-                child: Text('Save Changes'),
-              ),
-            ],
+                SizedBox(height: 20),
+                Text(
+                  'Name',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                TextFormField(
+                  controller: _nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Email',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    // Add your email validation logic here if needed
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Bio',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                TextFormField(
+                  controller: _bioController,
+                  maxLines: 3,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // Save changes and navigate back to profile page
+                      Navigator.pop(context, {
+                        'name': _nameController.text,
+                        'email': _emailController.text,
+                        'bio': _bioController.text,
+                        'profileImage': _newProfileImage,
+                      });
+                    }
+                  },
+                  child: Text('Save Changes'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -101,18 +120,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> _selectProfileImage() async {
-  try {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        _newProfileImage = File(image.path);
-      });
+    try {
+      final ImagePicker _picker = ImagePicker();
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _newProfileImage = File(image.path);
+        });
+      }
+    } catch (e) {
+      print('Error selecting profile image: $e');
     }
-  } catch (e) {
-    print('Error selecting profile image: $e');
   }
 }
 
-}
 

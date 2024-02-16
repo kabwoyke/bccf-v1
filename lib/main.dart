@@ -107,12 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
               }
 
               if (snapshot.data?.session == null) {
-                return LoginScreen();
+                return Homepage();
               }
 
               return Homepage();
-
-
             }));
   }
 }

@@ -45,7 +45,6 @@ class _NavigatetabState extends State<Navigatetab> {
           Text(
             widget.name,
             style: TextStyle(
-              fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Colors.black,
             ),

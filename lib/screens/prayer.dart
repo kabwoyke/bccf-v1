@@ -1,9 +1,12 @@
 import 'package:bccf/components/button.dart';
 import 'package:bccf/components/notification.dart';
 import 'package:bccf/components/text_input.dart';
+import 'package:bccf/main.dart';
 import 'package:bccf/screens/login.dart';
+import 'package:bccf/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Prayerpage extends StatefulWidget {
   const Prayerpage({Key? key}) : super(key: key);
@@ -83,9 +86,9 @@ class _PrayerpageState extends State<Prayerpage> {
             ),
             Text(
               "The BCCF APP",
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: Colors.black,
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: FontWeight.w500,
               ),
             )
@@ -95,53 +98,67 @@ class _PrayerpageState extends State<Prayerpage> {
           Row(
             children: [
               NotificationIcon(icon: Icons.notifications, counter: 5),
-              SizedBox(width: 10),
+              SizedBox(width:10),
               Padding(
-                padding: const EdgeInsets.only(top: 22),
+                padding: const EdgeInsets.only(top:15),
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.black,
-                      size: 25,
+                    GestureDetector(
+                      onTap: (){
+                         Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ProfilePage()));
+                      },
+                      child: CircleAvatar(
+                        radius: 17,
+                        backgroundImage: AssetImage("assets/man.jpg"),
+                      )
                     ),
-                    Text(
-                      'User',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
+                    Text('Kimani',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13
+                    ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: 10),
+              SizedBox(width: 10,),
               Padding(
-                padding: const EdgeInsets.only(top: 22),
+                padding: const EdgeInsets.only(top:22),
                 child: Column(
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => LoginScreen()));
+                        try{
+                          await supabase.auth.signOut();
+                        } on AuthException catch(e){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("${e.message}"))
+                          );
+                        }
+                        catch(e){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("${e}"))
+                          );
+                        }
+
+                        // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>LoginScreen()));
                         print("logged out");
                       },
                       child: Icon(
                         Icons.logout_rounded,
-                        color: Colors.black,
-                        size: 25,
-                      ),
+                      color: Colors.black,
+                      size: 25,),
                     ),
-                    Text(
-                      'Logout',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    Text('Logout',
+                    style:GoogleFonts.poppins(
+                      fontSize: 13,
+                      fontWeight:FontWeight.w400 
+                    ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: 10)
+              SizedBox( width: 10,)
             ],
           ),
         ],
