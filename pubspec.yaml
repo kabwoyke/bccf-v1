@@ -43,7 +43,11 @@ dependencies:
   permission_handler: ^11.3.0
   google_fonts: ^6.1.0
   image_picker: ^1.0.7
+
   loading_indicator: ^3.1.1
+
+  video_player: ^2.8.2
+
 flutter_native_splash:
   android: true
   ios: true
