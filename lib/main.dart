@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'firebase_options.dart';
 
 
@@ -20,6 +21,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  
   await Supabase.initialize(
     url: dotenv.env["SUPABASE_URL"]!,
     anonKey: dotenv.env["SUPABASE_ANON_KEY"]!,
@@ -65,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
  
       if (event.event == AuthChangeEvent.signedIn) {
         await FirebaseMessaging.instance.requestPermission();
+        await FirebaseMessaging.instance.subscribeToTopic("all");
         await FirebaseMessaging.instance.getAPNSToken();
         var fcmToken = await FirebaseMessaging.instance.getToken();
 
@@ -94,6 +97,30 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+        body:
+             StreamBuilder<AuthState>(
+                stream: supabase.auth.onAuthStateChange,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("${snapshot.error.toString()}"),
+                    );
+                  }
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.data?.session == null) {
+                    return LoginScreen();
+                  }
+
+                  return Homepage();
+
+
+                })
+        );
+
         body: StreamBuilder<AuthState>(
             stream: supabase.auth.onAuthStateChange,
             builder: (context, snapshot) {
@@ -112,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               return Homepage();
             }));
+
   }
 }
 

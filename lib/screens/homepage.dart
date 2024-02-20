@@ -3,6 +3,7 @@ import 'package:bccf/components/notification.dart';
 import 'package:bccf/components/word.dart';
 import 'package:bccf/main.dart';
 import 'package:bccf/screens/login.dart';
+import 'package:bccf/screens/notifications.dart';
 import 'package:bccf/screens/prayer.dart';
 import 'package:bccf/screens/profile.dart';
 import 'package:bccf/screens/station.dart';
@@ -62,7 +63,16 @@ class _HomepageState extends State<Homepage> {
         actions: [
           Row(
             children: [
-              NotificationIcon(icon: Icons.notifications, counter: 5),
+              GestureDetector
+                (
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_)=>NotificationScreen()));
+                  },
+                  child: NotificationIcon(
+                      icon: Icons.notifications,
+                      counter: 5
+                  )
+              ),
               SizedBox(width:10),
               Padding(
                 padding: const EdgeInsets.only(top:15),
