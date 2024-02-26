@@ -1,6 +1,7 @@
 import 'package:bccf/screens/homepage.dart';
 import 'package:bccf/screens/login.dart';
 import 'package:bccf/services/cache/NotificationDatabase.dart';
+import 'package:bccf/services/notification_service.dart';
 import 'package:bccf/state/AuthProvider.dart';
 import 'package:bccf/state/NotificationProvider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -16,19 +17,18 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationDatabase.init();
-
+  NotificationService().initNotification();
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseMessaging.onMessage.listen((event) {
-    print(event.notification);
-  });
+
   await Supabase.initialize(
     url: dotenv.env["SUPABASE_URL"]!,
     anonKey: dotenv.env["SUPABASE_ANON_KEY"]!,
   );
+
   runApp(const MyApp());
 }
 
@@ -70,22 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
-    supabase
-    .channel('public:announcements')
-    .onPostgresChanges(
-        event: PostgresChangeEvent.insert,
-        schema: 'public',
-        table: 'announcements',
-        callback: (payload) async {
-          final record = await NotificationDatabase.findById(payload.newRecord['id']);
-          if(record.isEmpty){
-            return await NotificationDatabase.addNotification(payload.newRecord['id'],payload.newRecord['title'], payload.newRecord['content']);
-          }
-          var cache = await NotificationDatabase.fetchNotification();
-          print(cache.first.title);
-        })
-    .subscribe();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         Provider.of<NotificationProvider>(context,listen: false).fetchNotificationCount();
     });
@@ -100,12 +84,24 @@ class _MyHomePageState extends State<MyHomePage> {
         if (fcmToken != null) {
           await addToken(fcmToken);
         }
-        FirebaseMessaging.instance.onTokenRefresh.listen((event) async {
-          if (fcmToken != null) {
-            await addToken(fcmToken);
-          }
-        });
+
+
       }
+    });
+
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {
+        await addToken(fcmToken);
+    });
+
+    FirebaseMessaging.onMessage.listen((event) {
+      final notification = event.notification;
+      if( notification!= null){
+        NotificationService()
+            .showNotification(
+            title: notification.title,
+            body: notification.body);
+      }
+      print(event.notification?.title);
     });
   }
 
