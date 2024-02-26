@@ -18,6 +18,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  final  announcements = supabase.from("announcements").stream(primaryKey: ["id"]);
   String greatings() {
     final current = DateTime.now();
     final _hour = current.hour;
@@ -67,9 +68,20 @@ class _HomepageState extends State<Homepage> {
                   onTap: (){
                     Navigator.of(context).push(MaterialPageRoute(builder: (_)=>NotificationScreen()));
                   },
-                  child: NotificationIcon(
-                      icon: Icons.notifications,
-                      counter: 5
+                  child: StreamBuilder(
+                    stream: announcements,
+                    builder: (context, snapshot) {
+                      if(snapshot.hasError){
+                        return NotificationIcon(
+                            icon: Icons.notifications,
+                            counter: 0
+                        );
+                      }
+                      return NotificationIcon(
+                          icon: Icons.notifications,
+                          counter: snapshot.data?.length ?? 0
+                      );
+                    }
                   )
               ),
               SizedBox(width:10),

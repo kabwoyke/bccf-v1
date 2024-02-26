@@ -1,6 +1,8 @@
 import 'package:bccf/screens/homepage.dart';
 import 'package:bccf/screens/login.dart';
+import 'package:bccf/services/cache/NotificationDatabase.dart';
 import 'package:bccf/state/AuthProvider.dart';
+import 'package:bccf/state/NotificationProvider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -8,20 +10,21 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'firebase_options.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Permission.notification.onGrantedCallback(() {
-    print("hello perm");
-  }).request();
+  await NotificationDatabase.init();
+
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+
+  FirebaseMessaging.onMessage.listen((event) {
+    print(event.notification);
+  });
   await Supabase.initialize(
     url: dotenv.env["SUPABASE_URL"]!,
     anonKey: dotenv.env["SUPABASE_ANON_KEY"]!,
@@ -37,10 +40,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => AuthProvider(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<AuthProvider>(create: (_)=>AuthProvider()),
+          ChangeNotifierProvider<NotificationProvider>(create: (_)=>NotificationProvider())
+        ],
+
         child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'BCCF',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
@@ -63,10 +70,29 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
+    supabase
+    .channel('public:announcements')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.insert,
+        schema: 'public',
+        table: 'announcements',
+        callback: (payload) async {
+          final record = await NotificationDatabase.findById(payload.newRecord['id']);
+          if(record.isEmpty){
+            return await NotificationDatabase.addNotification(payload.newRecord['id'],payload.newRecord['title'], payload.newRecord['content']);
+          }
+          var cache = await NotificationDatabase.fetchNotification();
+          print(cache.first.title);
+        })
+    .subscribe();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        Provider.of<NotificationProvider>(context,listen: false).fetchNotificationCount();
+    });
     supabase.auth.onAuthStateChange.listen((event) async {
  
       if (event.event == AuthChangeEvent.signedIn) {
-        await FirebaseMessaging.instance.requestPermission();
+        await FirebaseMessaging.instance.requestPermission(alert: true , sound: true);
         await FirebaseMessaging.instance.subscribeToTopic("all");
         await FirebaseMessaging.instance.getAPNSToken();
         var fcmToken = await FirebaseMessaging.instance.getToken();
