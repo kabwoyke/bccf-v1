@@ -4,6 +4,7 @@ import 'package:bccf/components/word.dart';
 import 'package:bccf/main.dart';
 import 'package:bccf/screens/events.dart';
 import 'package:bccf/screens/login.dart';
+import 'package:bccf/screens/notifications.dart';
 import 'package:bccf/screens/prayer.dart';
 
 import 'package:flutter/material.dart';
@@ -77,6 +78,48 @@ class _HomepageState extends State<Homepage> {
                 leading:Icon(Icons.logout),
                 title: Text("Logout"),
                 onTap: () async {
+          Row(
+            children: [
+              GestureDetector
+                (
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_)=>NotificationScreen()));
+                  },
+                  child: NotificationIcon(
+                      icon: Icons.notifications,
+                      counter: 5
+                  )
+              ),
+              SizedBox(width:10),
+              Padding(
+                padding: const EdgeInsets.only(top:15),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                         Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ProfilePage()));
+                      },
+                      child:CircleAvatar(
+                        radius: 17,
+                        backgroundImage: AssetImage("assets/man.jpg"),
+                      )
+                    ),
+                    Text('Kimani',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13
+                    ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 10,),
+              Padding(
+                padding: const EdgeInsets.only(top:22),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
                         try{
                           await supabase.auth.signOut();
                         } on AuthException catch(e){
