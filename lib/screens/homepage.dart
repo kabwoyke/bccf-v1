@@ -6,6 +6,7 @@ import 'package:bccf/screens/login.dart';
 import 'package:bccf/screens/notifications.dart';
 import 'package:bccf/screens/prayer.dart';
 import 'package:bccf/screens/profile.dart';
+import 'package:bccf/screens/station.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -54,7 +55,7 @@ class _HomepageState extends State<Homepage> {
               "The BCCF APP",
               style: GoogleFonts.poppins(
                 color: Colors.black,
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: FontWeight.w500,
               ),
             )
@@ -86,21 +87,22 @@ class _HomepageState extends State<Homepage> {
               ),
               SizedBox(width:10),
               Padding(
-                padding: const EdgeInsets.only(top:22),
+                padding: const EdgeInsets.only(top:15),
                 child: Column(
                   children: [
                     GestureDetector(
                       onTap: (){
                          Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ProfilePage()));
                       },
-                      child: Icon(Icons.person,
-                      color: Colors.black,
-                      size: 25,),
+                      child:CircleAvatar(
+                        radius: 17,
+                        backgroundImage: AssetImage("assets/man.jpg"),
+                      )
                     ),
-                    Text('User',
+                    Text('Kimani',
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w400,
-                      fontSize: 14
+                      fontSize: 13
                     ),
                     ),
                   ],
@@ -136,7 +138,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                     Text('Logout',
                     style:GoogleFonts.poppins(
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight:FontWeight.w400 
                     ),
                     ),
@@ -177,7 +179,7 @@ class _HomepageState extends State<Homepage> {
                 SizedBox(width: 10,),
                 Navigatetab(onPressed: (){}, logo: Image.asset("assets/Projects.jpg"), name: "Projects"),
                 SizedBox(width: 10,),
-                Navigatetab(onPressed: (){}, logo: Image.asset("assets/Social.png"), name: "Our Socials"),
+                Navigatetab(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>VideoPage()));}, logo: Image.asset("assets/Social.png"), name: "Our Socials"),
 
                  ],
             )

@@ -123,6 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         body:
              StreamBuilder<AuthState>(
                 stream: supabase.auth.onAuthStateChange,
@@ -145,6 +146,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 })
         );
+
+        body: StreamBuilder<AuthState>(
+            stream: supabase.auth.onAuthStateChange,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("${snapshot.error.toString()}"),
+                );
+              }
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.data?.session == null) {
+                return Homepage();
+              }
+
+              return Homepage();
+            }));
+
   }
 }
 

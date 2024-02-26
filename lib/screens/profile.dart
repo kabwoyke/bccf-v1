@@ -43,8 +43,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
-      automaticallyImplyLeading: false,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
         shadowColor: Colors.grey.shade300,
         backgroundColor: Colors.grey.shade200,
         toolbarHeight: 70,
@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
               "The BCCF APP",
               style: GoogleFonts.poppins(
                 color: Colors.black,
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: FontWeight.w500,
               ),
             )
@@ -74,40 +74,47 @@ class _ProfilePageState extends State<ProfilePage> {
           Row(
             children: [
               NotificationIcon(icon: Icons.notifications, counter: 5),
-              SizedBox(width:10),
+              SizedBox(width: 10),
               Padding(
-                padding: const EdgeInsets.only(top:22),
+                padding: const EdgeInsets.only(top: 13),
                 child: Column(
                   children: [
-
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 17,
+                            backgroundImage: FileImage(_image!),
+                          )
+                        : SizedBox(),
+                  Text(_name) // Adjust size as needed
                   ],
                 ),
               ),
-              SizedBox(width: 10,),
+              SizedBox(width: 10),
               Padding(
-                padding: const EdgeInsets.only(top:22),
+                padding: const EdgeInsets.only(top: 22),
                 child: Column(
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>LoginScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => LoginScreen()));
                         print("logged out");
                       },
                       child: Icon(
                         Icons.logout_rounded,
-                      color: Colors.black,
-                      size: 25,),
+                        color: Colors.black,
+                        size: 25,
+                      ),
                     ),
-                    Text('Logout',
-                    style:GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight:FontWeight.w400 
-                    ),
+                    Text(
+                      'Logout',
+                      style: GoogleFonts.poppins(
+                          fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
               ),
-              SizedBox( width: 10,)
+              SizedBox(width: 10)
             ],
           ),
         ],
@@ -117,6 +124,19 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+                padding: const EdgeInsets.only(top: 22),
+                child: Column(
+                  children: [
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 50,
+                            backgroundImage: FileImage(_image!),
+                          )
+                        : SizedBox(), // Adjust size as needed
+                  ],
+                ),
+              ),
             SizedBox(height: 20),
             Text(
               'Name',
@@ -130,11 +150,11 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Text(_email),
             SizedBox(height: 20),
-             Text(
+            Text(
               'Gender',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Text('Male'), 
+            Text('Male'),
             SizedBox(height: 20),
             Text(
               'Bio',
@@ -152,5 +172,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
 
 

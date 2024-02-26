@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
                 children: [
                   Icon(
                     icon,
-                    size: 30,
+                    size: 28,
                     color: Colors.black,
                   ),
                   Positioned(
@@ -31,8 +31,8 @@ import 'package:flutter/material.dart';
                         shape: BoxShape.circle,
                       ),
                       constraints: BoxConstraints(
-                        minWidth: 17,
-                        minHeight: 17,
+                        minWidth: 14,
+                        minHeight: 14,
                       ),
                       child: Text(
                         counter.toString(),
