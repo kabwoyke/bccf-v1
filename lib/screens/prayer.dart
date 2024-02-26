@@ -3,7 +3,7 @@ import 'package:bccf/components/notification.dart';
 import 'package:bccf/components/text_input.dart';
 import 'package:bccf/main.dart';
 import 'package:bccf/screens/login.dart';
-import 'package:bccf/screens/profile.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -71,63 +71,47 @@ class _PrayerpageState extends State<Prayerpage> {
         automaticallyImplyLeading: false,
         shadowColor: Colors.grey.shade300,
         backgroundColor: Colors.grey.shade200,
-        toolbarHeight: 70,
+        toolbarHeight: 50,
         shape: const ContinuousRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(45),
           ),
         ),
-        title: Column(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
               height: 40,
               child: Image(image: AssetImage("assets/logo.jpeg")),
             ),
-            Text(
-              "The BCCF APP",
-              style: GoogleFonts.poppins(
-                color: Colors.black,
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                "The BCCF APP",
+                style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             )
           ],
         ),
         actions: [
-          Row(
-            children: [
-              NotificationIcon(icon: Icons.notifications, counter: 5),
-              SizedBox(width:10),
-              Padding(
-                padding: const EdgeInsets.only(top:15),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                         Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ProfilePage()));
-                      },
-                      child: CircleAvatar(
-                        radius: 17,
-                        backgroundImage: AssetImage("assets/man.jpg"),
-                      )
-                    ),
-                    Text('Kimani',
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13
-                    ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 10,),
-              Padding(
-                padding: const EdgeInsets.only(top:22),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
+          NotificationIcon(icon: Icons.notifications, counter: 5),
+          const SizedBox(width: 10,),
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            itemBuilder:(BuildContext context) =>[
+               PopupMenuItem(child:ListTile(
+                leading:Icon(Icons.person),
+                title: Text("Kimani"),
+                onTap:(){},
+              )),
+              PopupMenuItem(child:ListTile(
+                leading:Icon(Icons.logout),
+                title: Text("Logout"),
+                onTap: () async {
                         try{
                           await supabase.auth.signOut();
                         } on AuthException catch(e){
@@ -140,27 +124,11 @@ class _PrayerpageState extends State<Prayerpage> {
                               SnackBar(content: Text("${e}"))
                           );
                         }
-
-                        // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>LoginScreen()));
                         print("logged out");
                       },
-                      child: Icon(
-                        Icons.logout_rounded,
-                      color: Colors.black,
-                      size: 25,),
-                    ),
-                    Text('Logout',
-                    style:GoogleFonts.poppins(
-                      fontSize: 13,
-                      fontWeight:FontWeight.w400 
-                    ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox( width: 10,)
-            ],
-          ),
+              )),
+            ]
+            )
         ],
       ),
       body: SingleChildScrollView(

@@ -47,7 +47,7 @@ flutter_native_splash:
   android: true
   ios: true
   web: false
-  color: "#42a5f5"
+  color: "white"
   image: "assets/logo.jpeg"
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -103,6 +103,9 @@ flutter:
      - assets/Tv.jpg
      - assets/Social.png
      - assets/Projects.jpg
+     - assets/hands.jpg
+     - assets/kesha.jpg
+     - assets/together.jpg
      - .env
 
 

@@ -10,15 +10,15 @@ import 'package:flutter/material.dart';
     Widget build(BuildContext context) {
       return Column(
         children: [
-          SizedBox(height: 10,),
+          SizedBox(height: 6,),
           Padding(
-            padding: const EdgeInsets.only(top: 8, right: 8),
+            padding: const EdgeInsets.only(top: 0, right: 8),
             child: Center(
               child: Stack(
                 children: [
                   Icon(
                     icon,
-                    size: 28,
+                    size: 25,
                     color: Colors.black,
                   ),
                   Positioned(
@@ -31,8 +31,8 @@ import 'package:flutter/material.dart';
                         shape: BoxShape.circle,
                       ),
                       constraints: BoxConstraints(
-                        minWidth: 14,
-                        minHeight: 14,
+                        minWidth: 12,
+                        minHeight: 12,
                       ),
                       child: Text(
                         counter.toString(),
