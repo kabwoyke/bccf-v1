@@ -119,6 +119,8 @@ flutter:
      - assets/hands.jpg
      - assets/kesha.jpg
      - assets/together.jpg
+     - assets/facebook logo.png
+     - assets/YouTubelogo.png
      - .env
 
 
