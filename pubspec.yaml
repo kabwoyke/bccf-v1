@@ -120,7 +120,8 @@ flutter:
      - assets/kesha.jpg
      - assets/together.jpg
      - assets/facebook logo.png
-     - assets/YouTubelogo.png
+     - assets/YouTubelogo.png 
+     - assets/Churchbuild.jpg
      - .env
 
 

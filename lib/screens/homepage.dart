@@ -3,6 +3,7 @@ import 'package:bccf/components/navigater.dart';
 import 'package:bccf/components/word.dart';
 import 'package:bccf/screens/events.dart';
 import 'package:bccf/screens/prayer.dart';
+import 'package:bccf/screens/services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,7 +28,7 @@ class _HomepageState extends State<Homepage> {
             title: Text("Our social Media Platforms,", style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.w500),),
             contentPadding:EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             content: Container(
-              height: 170,
+              height: 190,
               width:double.maxFinite,
               child: Column(
                 children: [
@@ -46,7 +47,7 @@ class _HomepageState extends State<Homepage> {
                       child: Card(
                         elevation: 3,
                             child: ListTile(
-                              leading: Container(height: 80, width: 80, child: Image.asset("assets/YouTubelogo.png")),
+                              leading: Container(height: 40, width: 80, child: Image.asset("assets/YouTubelogo.png")),
                               title: Text("YouTube", style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),),
                               subtitle: Text("Click To Join our Youtube Channel", style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400),),
                             ),
@@ -121,7 +122,10 @@ class _HomepageState extends State<Homepage> {
                       width: 10,
                     ),
                     Navigatetab(
-                        onPressed: () {},
+                        onPressed: () {
+                           Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => project()));
+                        },
                         logo: Image.asset("assets/Projects.jpg"),
                         name: "Projects"),
                     SizedBox(
