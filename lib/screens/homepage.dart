@@ -7,8 +7,10 @@ import 'package:bccf/screens/notifications.dart';
 import 'package:bccf/screens/prayer.dart';
 import 'package:bccf/screens/profile.dart';
 import 'package:bccf/screens/station.dart';
+import 'package:bccf/services/cache/NotificationDatabase.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Homepage extends StatefulWidget {
@@ -33,7 +35,16 @@ class _HomepageState extends State<Homepage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<NotificationDatabase>().fetchNotification();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final announce = context.read<NotificationDatabase>().fetchNotification();
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.grey.shade300,
@@ -61,6 +72,7 @@ class _HomepageState extends State<Homepage> {
             )
           ],
         ),
+          // value.announcements.where((a) => a.read == false).length
         actions: [
           Row(
             children: [
@@ -69,18 +81,11 @@ class _HomepageState extends State<Homepage> {
                   onTap: (){
                     Navigator.of(context).push(MaterialPageRoute(builder: (_)=>NotificationScreen()));
                   },
-                  child: StreamBuilder(
-                    stream: announcements,
-                    builder: (context, snapshot) {
-                      if(snapshot.hasError){
-                        return NotificationIcon(
-                            icon: Icons.notifications,
-                            counter: 0
-                        );
-                      }
+                  child: Consumer<NotificationDatabase>(
+                    builder: (context , value , child) {
                       return NotificationIcon(
                           icon: Icons.notifications,
-                          counter: snapshot.data?.length ?? 0
+                          counter: value.notificationCount
                       );
                     }
                   )
@@ -182,7 +187,14 @@ class _HomepageState extends State<Homepage> {
                 Navigatetab(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>VideoPage()));}, logo: Image.asset("assets/Social.png"), name: "Our Socials"),
 
                  ],
-            )
+            ),
+                   // Consumer<NotificationDatabase>(
+                   //   builder: (context , value , child) {
+                   //     return ElevatedButton(onPressed: (){
+                   //       value.inc();
+                   //     }, child: Text("cli"));
+                   //   }
+                   // )
                  ]
               ),
             ),

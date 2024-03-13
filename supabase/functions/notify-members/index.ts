@@ -7,7 +7,7 @@ import {JWT} from 'npm:google-auth-library@9.6.3';
 
 
 interface Announcement {
-  id:string
+  id:number
   title:string
   content:string
 }
@@ -46,9 +46,13 @@ Deno.serve(async (req) => {
           notification : {
             title:payload.record.title,
             body:payload.record.content
+          },
+          data:{
+            id : payload.record.id.toString()
           }
 
-        }}
+        }
+      }
       )
 }
   )
