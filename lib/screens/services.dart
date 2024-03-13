@@ -35,7 +35,7 @@ class _projectState extends State<project> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter the number of days';
                       }
-                      else if (int.parse(value) < ) {
+                      else if (int.parse(value) < 0 ) {
                         return 'please enter correct days';
                       }
                     } catch (e) {

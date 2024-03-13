@@ -2,8 +2,10 @@ import 'package:bccf/components/notification.dart';
 import 'package:bccf/main.dart';
 import 'package:bccf/screens/login.dart';
 import 'package:bccf/screens/notifications.dart';
+import 'package:bccf/services/cache/NotificationDatabase.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Custom_appbar extends StatefulWidget {
@@ -85,20 +87,13 @@ class _Custom_appbarState extends State<Custom_appbar> {
                   onTap: (){
                     Navigator.of(context).push(MaterialPageRoute(builder: (_)=>NotificationScreen()));
                   },
-                  child: StreamBuilder(
-                    stream: announcements,
-                    builder: (context, snapshot) {
-                      if(snapshot.hasError){
+                  child: Consumer<NotificationDatabase>(
+                      builder: (context , value , child) {
                         return NotificationIcon(
                             icon: Icons.notifications,
                             counter: 0
                         );
                       }
-                      return NotificationIcon(
-                          icon: Icons.notifications,
-                          counter: snapshot.data?.length ?? 0
-                      );
-                    }
                   )
               ),
               SizedBox(width:5),
