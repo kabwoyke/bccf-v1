@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
     final IconData icon;
     final int counter;
 
+
     NotificationIcon({required this.icon, required this.counter});
 
     @override
@@ -18,7 +19,7 @@ import 'package:flutter/material.dart';
                 children: [
                   Icon(
                     icon,
-                    size: 32,
+                    size: 28,
                     color: Colors.black,
                   ),
                   Positioned(
