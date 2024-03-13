@@ -1,34 +1,107 @@
-import 'package:bccf/services/cache/Notification.dart';
+import 'package:bccf/services/cache/AnnouncementNotification.dart';
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
-class NotificationDatabase {
-  static late Isar isar;
-  static Future<void> init() async{
+
+import 'package:bccf/services/cache/AnnouncementNotification.dart';
+import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
+
+class NotificationDatabase extends ChangeNotifier {
+  static final NotificationDatabase _instance = NotificationDatabase._internal();
+  static late final Isar isar;
+  final List<AnnouncementNotification> announcements = [];
+  var notificationCount = 0;
+
+  // Private constructor
+  NotificationDatabase._internal();
+
+  // Factory constructor to return the same instance
+  factory NotificationDatabase() {
+    return _instance;
+  }
+
+  // Initialization method, can still be called directly if needed
+  static Future<void> init() async {
     final documentsDir = await getApplicationDocumentsDirectory();
-    isar = await Isar.open([NotificationSchema], directory: documentsDir.path);
+    isar = await Isar.open([AnnouncementNotificationSchema], directory: documentsDir.path);
   }
 
-  final List<Notification> announcements = [];
-
-  static Future<void> addNotification(int id ,String title , String content) async {
-    final new_id = Notification()..id = id;
-    final new_title = Notification()..title = title;
-    final new_content = Notification()..title = content;
-
-    await isar.writeTxn(() => isar.notifications.put(new_id));
-    await isar.writeTxn(() => isar.notifications.put(new_title));
-    await isar.writeTxn(() => isar.notifications.put(new_content));
-      
+  Future<void> fetchNotification() async {
+    List<AnnouncementNotification> fetchedNotifications = await isar.announcementNotifications.where().findAll();
+    announcements.clear();
+    announcements.addAll(fetchedNotifications.reversed);
+    print(fetchedNotifications[0].id);
+    notificationCount = announcements.length;
+    notifyListeners();
   }
 
-  static Future<List<Notification>> fetchNotification()async{
-    List<Notification> fetchedNotifications = await isar.notifications.where().findAll();
-    return fetchedNotifications;
+  Future<void> addNotification(AnnouncementNotification noti) async {
+    final newAnnouncement = AnnouncementNotification(id: noti.id, title: noti.title, content: noti.content);
+    await isar.writeTxn(() async {
+      await isar.announcementNotifications.put(newAnnouncement);
+      print("inserted");
+    });
+    await fetchNotification();
+    notificationCount = announcements.length;
+    notifyListeners();
   }
 
-  static Future<List<Notification>> findById(int id) async{
-    final result = await isar.notifications.where().idEqualTo(id).findAll();
-    return result;
+  void startListeningToNotifications() {
+    // Assuming `announcementNotifications` is your Isar collection
+    final stream = isar.announcementNotifications.watchLazy();
+
+    stream.listen((_) async {
+      await fetchNotification(); // This will update `announcements` and `notificationCount`
+      notifyListeners(); // This notifies all the listeners about the change.
+    });
+  }
+
+
+  static Future<void> close() async {
+    await isar.close(); // This closes the Isar instance
   }
 }
+
+
+// class NotificationDatabase extends ChangeNotifier {
+//   static late Isar isar;
+//   final List<AnnouncementNotification> announcements = [];
+//   static Future<void> init() async{
+//     final documentsDir = await getApplicationDocumentsDirectory();
+//     isar = await Isar.open([AnnouncementNotificationSchema], directory: documentsDir.path);
+//   }
+//   var notificationCount = 0;
+//   Future<void> fetchNotification() async {
+//     List<AnnouncementNotification> fetchedNotifications = await isar.announcementNotifications.where().findAll();
+//     announcements.clear();
+//     announcements.addAll(fetchedNotifications.reversed);
+//     print(fetchedNotifications[0].id);
+//     notificationCount = announcements.length;
+//     notifyListeners();
+//
+//   }
+//     Future<void> addNotification(AnnouncementNotification noti) async {
+//     final newAnnouncement = AnnouncementNotification(id: noti.id , title: noti.title , content: noti.content);
+//     await isar.writeTxn(() async {
+//       await isar.announcementNotifications.put(newAnnouncement);
+//       print("inserted");
+//
+//     });
+//     await fetchNotification();
+//     notificationCount = announcements.length;
+//     notifyListeners();
+//   }
+//
+//   void inc(){
+//     notificationCount+=1;
+//     notifyListeners();
+//   }
+//
+//   static Future<void> close() async {
+//     await isar.close(); // This closes the Isar instance
+//   }
+//
+// }

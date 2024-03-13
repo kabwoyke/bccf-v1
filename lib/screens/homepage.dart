@@ -3,9 +3,19 @@ import 'package:bccf/components/navigater.dart';
 import 'package:bccf/components/word.dart';
 import 'package:bccf/screens/events.dart';
 import 'package:bccf/screens/prayer.dart';
+
 import 'package:bccf/screens/services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:bccf/screens/profile.dart';
+import 'package:bccf/screens/station.dart';
+import 'package:bccf/services/cache/NotificationDatabase.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -66,7 +76,16 @@ class _HomepageState extends State<Homepage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<NotificationDatabase>().fetchNotification();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final announce = context.read<NotificationDatabase>().fetchNotification();
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
@@ -79,10 +98,47 @@ class _HomepageState extends State<Homepage> {
             Word(),
             const SizedBox(height: 30),
             Container(
+
               width: MediaQuery.of(context).size.width,
               child: Column(children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              height: 40,
+              child: Image(image: AssetImage("assets/logo.jpeg")),
+            ),
+            Text(
+              "The BCCF APP",
+              style: GoogleFonts.poppins(
+                color: Colors.black,
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+              ),
+            )
+          ],
+        ),
+          // value.announcements.where((a) => a.read == false).length
+        actions: [
+          Row(
+            children: [
+              GestureDetector
+                (
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_)=>NotificationScreen()));
+                  },
+                  child: Consumer<NotificationDatabase>(
+                    builder: (context , value , child) {
+                      return NotificationIcon(
+                          icon: Icons.notifications,
+                          counter: value.notificationCount
+                      );
+                    }
+                  )
+              ),
+              SizedBox(width:10),
+              Padding(
+                padding: const EdgeInsets.only(top:15),
+                child: Column(
+
                   children: [
                     Navigatetab(
                         onPressed: () {},
@@ -138,8 +194,59 @@ class _HomepageState extends State<Homepage> {
                         logo: Image.asset("assets/Social.png"),
                         name: "Our Socials"),
                   ],
+
                 )
               ]),
+
+                ),
+              ),
+              SizedBox( width: 10,)
+            ],
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            const SizedBox(height: 20),
+            Word(),
+            const SizedBox(height: 30),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                 children: [
+                  Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Navigatetab(onPressed: (){}, logo: Image.asset("assets/Church.jpg"), name: "Services"),
+                SizedBox(width: 10,),
+                Navigatetab(onPressed: (){}, logo: Image.asset("assets/calender.png"), name: "Events"),
+                SizedBox(width: 10,),
+                Navigatetab(onPressed: (){},logo: Image.asset("assets/Giving.jpg"), name: "Offering"),
+              ],
+            ),
+            const SizedBox(height: 35),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Navigatetab(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Prayerpage()));},logo: Image.asset("assets/Prayer.jpg"), name: "Prayer Request"),
+                SizedBox(width: 10,),
+                Navigatetab(onPressed: (){}, logo: Image.asset("assets/Projects.jpg"), name: "Projects"),
+                SizedBox(width: 10,),
+                Navigatetab(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>VideoPage()));}, logo: Image.asset("assets/Social.png"), name: "Our Socials"),
+
+                 ],
+            ),
+                   // Consumer<NotificationDatabase>(
+                   //   builder: (context , value , child) {
+                   //     return ElevatedButton(onPressed: (){
+                   //       value.inc();
+                   //     }, child: Text("cli"));
+                   //   }
+                   // )
+                 ]
+              ),
             ),
           ],
         ),
